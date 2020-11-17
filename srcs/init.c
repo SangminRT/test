@@ -80,12 +80,15 @@ void	init_info(t_info *info, char *path)
 	int i;
 
 	i = 0;
+	info->mlx = mlx_init();
 	if (!(info->cub = (t_cub *)malloc(sizeof(t_cub))))
 		error_exit("Memory allocation failed");
 	cub_read_file(info, path);
-	if (info->cub->render_size_x > SCREENWIDTH)
+	if (info->cub->render_size_x > SCREENWIDTH
+		|| info->cub->render_size_x < 201)
 		info->cub->render_size_x = SCREENWIDTH;
-	if (info->cub->render_size_y > SCREENHEIGHT)
+	if (info->cub->render_size_y > SCREENHEIGHT
+		|| info->cub->render_size_y < 201)
 		info->cub->render_size_y = SCREENHEIGHT;
 	info->win = mlx_new_window(info->mlx,
 		info->cub->render_size_x, info->cub->render_size_y, "cub3D by sanhan");

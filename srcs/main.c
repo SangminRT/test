@@ -88,7 +88,6 @@ int		main(int argc, char **argv)
 {
 	if (argc == 2)
 	{
-		g_info.mlx = mlx_init();
 		init_info(&g_info, argv[1]);
 		init_info_rest(&g_info);
 		mlx_loop_hook(g_info.mlx, main_loop, &g_info);

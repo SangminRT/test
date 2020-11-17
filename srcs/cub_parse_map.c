@@ -46,8 +46,8 @@ void	cub_save_sprite(t_info *info)
 		{
 			if (info->cub->map[i][j] == '2')
 			{
-				info->sprite[sprite_count].x = i;
-				info->sprite[sprite_count].y = j;
+				info->sprite[sprite_count].x = i + 0.5;
+				info->sprite[sprite_count].y = j + 0.5;
 				info->cub->map[i][j] = '0';
 				sprite_count++;
 			}
