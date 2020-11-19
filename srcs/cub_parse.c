@@ -91,6 +91,7 @@ void	cub_read_file(t_info *info, const char *path)
 	char	**cub_temp;
 	int		cub_line_num;
 
+	check_file_format(path);
 	init_cub(info->cub);
 	line = cub_read_line(path);
 	cub_temp = ft_split(line, '\n');

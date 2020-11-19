@@ -22,6 +22,19 @@ void	error_exit(char *msg)
 	exit(1);
 }
 
+void	check_file_format(char *filepath)
+{
+	int i;
+
+	i = ft_strlen(filepath);
+	if (i < 4)
+		error_exit("Check your .cub file");
+	i -= 4;
+	if (ft_strncmp(&filepath[i], ".cub", 5) != 0)
+		error_exit("Check your .cub file");
+	return ;
+}
+
 void	check_valid_file(char *filepath)
 {
 	int	fd;

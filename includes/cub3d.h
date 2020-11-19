@@ -247,6 +247,7 @@ void			set_top_bot_space(t_info *info, char **max_pad);
 ** error.c
 */
 void			error_exit(char *msg);
+void			check_file_format(char *filepath);
 void			check_valid_file(char *filepath);
 
 /*
