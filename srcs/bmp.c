@@ -6,7 +6,7 @@
 /*   By: sanhan <sanhan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/17 04:36:34 by sanhan            #+#    #+#             */
-/*   Updated: 2020/11/17 04:44:31 by sanhan           ###   ########.fr       */
+/*   Updated: 2020/11/23 08:50:56 by sanhan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,82 @@ void					write_data(t_info *info, int fd)
 		i--;
 	}
 }
+
+#if 0
+void	set_header(unsigned char *header, t_info *info, int imgsize)
+{
+	unsigned short	bitcount;
+	unsigned int	filesize;
+	unsigned int	bi_size;
+	unsigned int	bf_off_bits;
+	unsigned short	bi_planes;
+
+	bi_size = 40;
+	bf_off_bits = 54;
+	bi_planes = 1;
+	bitcount = 24;
+	filesize = 54 + imgsize;
+	ft_bzero(header, 54);
+	ft_memcpy(header, "BM", 2);
+	ft_memcpy(header + 10, &bf_off_bits, 4);
+	ft_memcpy(header + 14, &bi_size, 4);
+	ft_memcpy(header + 26, &bi_planes, 2);
+	ft_memcpy(header + 2, &filesize, 4);
+	ft_memcpy(header + 18, &info->cub->render_size_x, 4);
+	ft_memcpy(header + 22, &info->cub->render_size_y, 4);
+	ft_memcpy(header + 28, &bitcount, 2);
+	ft_memcpy(header + 34, &imgsize, 4);
+}
+
+void	set_pixels(unsigned char *buf, t_info *info, unsigned int wid_bytes)
+{
+	int	i;
+	int	j;
+	int	tmp;
+
+	i = -1;
+	tmp = info->cub->render_size_y;
+	while (++i < info->cub->render_size_y)
+	{
+		j = -1;
+		--tmp;
+		while (++j < info->cub->render_size_x)
+		{
+			buf[tmp * wid_bytes + j * 3 + 0] = (info->cub->map[i][j]) & 0xff;
+			buf[tmp * wid_bytes + j * 3 + 1] = (info->cub->map[i][j] >> 8) & 0xff;
+			buf[tmp * wid_bytes + j * 3 + 2] = (info->cub->map[i][j] >> 16) & 0xff;
+		}
+	}
+}
+
+void	make_bmp(unsigned char *header, unsigned char *buf,
+					unsigned int size)
+{
+	int fd;
+
+	fd = open("./screenshot.bmp", O_CREAT | O_WRONLY, S_IRWXU);
+	write(fd, header, 54);
+	write(fd, buf, size);
+	close(fd);
+}
+
+void	save_bmp(t_info *info)
+{
+	unsigned char	header[54];
+	unsigned char	*buf;
+	unsigned int	wid_bytes;
+	unsigned int	imgsize;
+
+	wid_bytes = info->cub->render_size_x * 3;
+	imgsize = wid_bytes * info->cub->render_size_y;
+	set_header(header, info, imgsize);
+	buf = malloc(imgsize);
+	set_pixels(buf, info, wid_bytes);
+	make_bmp(header, buf, imgsize);
+	free(buf);
+}
+
+#endif
 
 int						save_bmp(t_info *info)
 {
